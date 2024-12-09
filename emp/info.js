@@ -57,7 +57,6 @@ async function checkISBN(e) {
 
     const response = await resgataDado(valor);
     
-    console.log(response);
     const obj = await response.json();
     const secao = elementoInfo(obj.title, obj.authors[0], obj.publisher, obj.year)
     main.appendChild(secao);
