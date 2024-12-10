@@ -28,7 +28,7 @@ export async function resgataDado(valor) {
     }
 };
 
-function transformValue(str){
+export function transformValue(str){
     if (str.length != 13) return 'número menor do que o esperado'
     
     const ar = Array.from(str)

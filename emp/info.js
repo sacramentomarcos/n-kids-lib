@@ -1,4 +1,4 @@
-import { resgataDado, createSection } from '../src/elements';
+import { resgataDado, createSection, transformValue } from '../src/elements';
 
 const reISBN = new RegExp(String.raw`^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$`);
 const main = document.getElementsByTagName('main')[0];
@@ -49,27 +49,6 @@ const nomes = [
 //     return secao
 // }
 
-function transformValue(str){
-    const tamanho = str.length
-    if (![4, 7, 11, 16].includes(tamanho)){
-        return str
-    }
-    switch (tamanho) {
-        case (4):
-            return str.slice(0, 3) + '-' + str[3];
-        case (7):
-            str = str.slice(0, 6) + '-' + str[6]
-            return str
-        case (11):
-            str = str.slice(0, 10) + '-' + str[10]
-            return str
-        case (16):
-            str = str.slice(0, 15) + '-' + str[15]
-            return str
-        default:
-            console.log('isso não era para acontecer')
-    };
-};
 
 async function checkISBN(e) {
     const valor = e.target.value
