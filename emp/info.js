@@ -1,7 +1,9 @@
+import { resgataDado, createSection } from '../src/elements';
+
 const reISBN = new RegExp(String.raw`^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$`);
-const main = document.getElementsByTagName('main')[0]
+const main = document.getElementsByTagName('main')[0];
 const inputText = document.getElementById('laele');
-const inputNome = document.getElementById('nomeemp')
+const inputNome = document.getElementById('nomeemp');
 const igual = document.querySelector('.alberto');
 const form = document.getElementById('ola');
 const nomes = [
@@ -17,76 +19,79 @@ const nomes = [
     "Kauã", "Lorena", "Miriam", "Natirê", "Orlando", "Paulo", "Rita", "Silvio", "Tiago", "Vânia"
   ];
 
-async function resgataDado(valor) {
-    const resp = await fetch(`https://brasilapi.com.br/api/isbn/v1/${valor}`)
-    if (resp.status >= 200 && resp.status < 300) {
-        return resp
-    } else {
-        return [resp.status, 'Houve um erro na requisição. Tente novamente']
-    }
-};
+// async function resgataDado(valor) {
+//     const resp = await fetch(`https://brasilapi.com.br/api/isbn/v1/${valor}`)
+//     if (resp.status >= 200 && resp.status < 300) {
+//         return resp
+//     } else {
+//         return [resp.status, 'Houve um erro na requisição. Tente novamente']
+//     }
+// };
 
-function elementoInfo(ti, au, ed, an) {
-    const secao = document.createElement('section')
-    secao.setAttribute('id', 'secao')
-    const titulo = document.createElement('h2')
-    titulo.setAttribute('id', 'titulo')
-    titulo.innerHTML = ti
-    const autor = document.createElement('h3')
-    autor.setAttribute('id', 'autor')
-    autor.innerHTML = au
-    const editora = document.createElement('h3')
-    editora.setAttribute('id', 'editora')
-    editora.innerHTML = ed
-    const ano = document.createElement('h3')
-    ano.setAttribute('id', 'ano')
-    ano.innerHTML = an
-    for (info of [titulo, autor, editora, ano]) {
-        secao.appendChild(info)
+// function elementoInfo(ti, au, ed, an) {
+//     const secao = document.createElement('section')
+//     secao.setAttribute('id', 'secao')
+//     const titulo = document.createElement('h2')
+//     titulo.setAttribute('id', 'titulo')
+//     titulo.innerHTML = ti
+//     const autor = document.createElement('h3')
+//     autor.setAttribute('id', 'autor')
+//     autor.innerHTML = au
+//     const editora = document.createElement('h3')
+//     editora.setAttribute('id', 'editora')
+//     editora.innerHTML = ed
+//     const ano = document.createElement('h3')
+//     ano.setAttribute('id', 'ano')
+//     ano.innerHTML = an
+//     for (info of [titulo, autor, editora, ano]) {
+//         secao.appendChild(info)
+//     }
+//     return secao
+// }
+
+function transformValue(str){
+    const tamanho = str.length
+    if (![4, 7, 11, 16].includes(tamanho)){
+        return str
     }
-    return secao
-}
+    switch (tamanho) {
+        case (4):
+            return str.slice(0, 3) + '-' + str[3];
+        case (7):
+            str = str.slice(0, 6) + '-' + str[6]
+            return str
+        case (11):
+            str = str.slice(0, 10) + '-' + str[10]
+            return str
+        case (16):
+            str = str.slice(0, 15) + '-' + str[15]
+            return str
+        default:
+            console.log('isso não era para acontecer')
+    };
+};
 
 async function checkISBN(e) {
     const valor = e.target.value
+    const evitaLetra = new RegExp('[A-Za-z]')
+    if (evitaLetra.test(valor)) {
+        console.log('não pode digitar letra')
+        e.target.value = (e.target.value).slice(0, -1)
+    };
+
+    e.target.value = transformValue(valor)
 
     if (!reISBN.test(valor)) {
         console.log('deu ruim, famiglia');
         return;
-    }
+    };
 
     const response = await resgataDado(valor);
-    
+
     const obj = await response.json();
-    const secao = elementoInfo(obj.title, obj.authors[0], obj.publisher, obj.year)
+    const secao = createSection(obj.title, obj.authors[0], obj.publisher, obj.year)
     main.appendChild(secao);
-}
-
-function submitar(e) {
-    console.log('bateu')
-
-    e.preventDefault();
-
-
-    // const secao = document.getElementById('secao')
-
-    // if (secao.firstChild.innerHTML === '') {
-    //     console.log('1 elemento da secao ta vazio')
-    //     return;
-    // }
-
-    // const url = new URL('localhost:5500/emp/confirmemp.html')
-
-    // for (item of secao.childNodes){
-    //     console.log(`${item.id} -> ${item.innerHTML}`)
-    //     url.searchParams.append(item.id ,item.innerHTML)
-    // }
-    // console.log('bateu no submit')
-    // console.log(url.toString())
-}
-
-
-form.addEventListener('submit',submitar)
+};
 
 inputText.addEventListener('input', checkISBN);
 
