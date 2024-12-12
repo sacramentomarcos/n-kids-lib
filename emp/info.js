@@ -51,14 +51,14 @@ const nomes = [
 
 
 async function checkISBN(e) {
-    const valor = e.target.value
-    const evitaLetra = new RegExp('[A-Za-z]')
+    const valor = e.target.value;
+    const evitaLetra = new RegExp('[A-Za-z]');
     if (evitaLetra.test(valor)) {
-        console.log('não pode digitar letra')
-        e.target.value = (e.target.value).slice(0, -1)
+        console.log('não pode digitar letra');
+        e.target.value = (e.target.value).slice(0, -1);
     };
 
-    e.target.value = transformValue(valor)
+    e.target.value = transformValue(valor);
 
     if (!reISBN.test(valor)) {
         console.log('deu ruim, famiglia');

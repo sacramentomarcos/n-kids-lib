@@ -28,14 +28,13 @@ export async function resgataDado(valor) {
     }
 };
 
-export function transformValue(str){
-    if (str.length != 13) return 'número menor do que o esperado'
-    
-    const ar = Array.from(str)
-    for (let num of [3, 6, 10, 15]) {
-        ar.splice(num, 0, '-')
-    }
-    return ar.join('')
+export function transformValue(e){
+    const alvo = e.target;
+    const refNums = [2, 5, 10, 14];
+    const indice = (alvo.value).length - 1;
+    if (refNums.includes(indice)) {
+        alvo.value += '-';
+    };
 };
 
 console.log(transformValue('471230471263'));
