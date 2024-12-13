@@ -19,6 +19,22 @@ export function createSection(ti, au, ed, an) {
     return secao;
 };
 
+
+export function retiraLetra(texto) {
+    
+    const checkNumber = '1234567890';
+    const letras = Array.from(texto)
+    for (let index = 0; index <= texto.length; index++){
+        if (![...checkNumber].includes(texto[index])){
+            letras.splice(index, 1);
+        };
+    };
+    const filtrado = letras.join('');
+    console.log(filtrado)
+    return filtrado;
+};
+
+
 export async function resgataDado(valor) {
     const resp = await fetch(`https://brasilapi.com.br/api/isbn/v1/${valor}`);
     if (resp.ok) {
@@ -29,7 +45,6 @@ export async function resgataDado(valor) {
         console.log(resp);
         throw new Error (`Erro ${resp.status}: Houve um erro na requisição. Tente novamente.`);
     }
-        
 };
 
 export function transformValue(e){
