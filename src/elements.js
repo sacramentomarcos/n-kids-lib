@@ -20,8 +20,8 @@ export function createSection(ti, au, ed, an) {
 };
 
 
+
 export function retiraLetra(texto) {
-    
     const checkNumber = '1234567890';
     const letras = Array.from(texto)
     for (let index = 0; index <= texto.length; index++){
@@ -30,9 +30,19 @@ export function retiraLetra(texto) {
         };
     };
     const filtrado = letras.join('');
-    console.log(filtrado)
+    console.log(filtrado);
     return filtrado;
 };
+
+export function toObj(titulo, autor, editora, ano) {
+    const obj = {
+        titulo: titulo,
+        autor: autor,
+        editora: editora,
+        ano: ano,
+    };
+    return obj
+} 
 
 
 export async function resgataDado(valor) {
@@ -44,7 +54,7 @@ export async function resgataDado(valor) {
     } else {
         console.log(resp);
         throw new Error (`Erro ${resp.status}: Houve um erro na requisição. Tente novamente.`);
-    }
+    };
 };
 
 export function transformValue(e){
