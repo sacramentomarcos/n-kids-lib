@@ -31,7 +31,7 @@ async function imprimeInfo(cod) {
     const secao = createSection(obj.title, obj.authors[0], obj.publisher, obj.year)
     
     main.appendChild(secao);
-    console.log(dados.titulo)
+    console.log(dados)
     return dados
 }
 
@@ -43,22 +43,16 @@ inputText.addEventListener('input', async (e) => {
         main.removeChild(document.querySelector('#secao'));
     };
     const dados = await imprimeInfo(codigo);
-    const href = document.querySelector('.atag').href
-    const novoEnd = new URL(href)
-    console.log(dados['titulo'])
-    for (let chave in dados) {
-        novoEnd.searchParams.set(`${chave}`, dados.chave)
-    }
-    if (inputNome.innerText == ''){
-        igual.innerText = 'coloca o nome ai'
-        envio.style.pointerEvents = 'none';
-        envio.style.color = 'grey'
-        return;
-    } else {
-        envio.style.pointerEvents = ''
-        envio.style.color = 'blue'
-    }
-    console.log(novoEnd)
+    console.log(dados)
+    const elemHref = document.querySelector('.atag')
+    const novoEnd = new URL(elemHref.href)
+    novoEnd.searchParams.set('titulo', dados.titulo)
+    novoEnd.searchParams.set('autor', dados.autor)
+    novoEnd.searchParams.set('editora', dados.editora)
+    novoEnd.searchParams.set('ano', dados.ano)
+    novoEnd.searchParams.set('emprestante', inputNome.value)
+    elemHref.href = novoEnd.toString()
+    console.log(elemHref.href)
 });
 
 
